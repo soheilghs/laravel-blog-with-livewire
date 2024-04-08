@@ -5,3 +5,11 @@
 th, td {
     padding: 15px;
 }
+
+.ck-editor__editable_inline {
+    min-height: 250px;
+}
+
+.ck-editor {
+    max-width: 95%;
+}

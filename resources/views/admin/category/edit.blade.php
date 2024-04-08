@@ -11,15 +11,17 @@
             </div>
         @endif
 
-        <form action="{{ route('admin.category.store') }}"
+        <form action="{{ route('admin.categories.update', $category->id) }}"
               method="post">
             @csrf
+            @method('PUT')
 
             <div>
                 <label for="title">
                     Title :
                 </label>
-                <input type="text" name="title" id="title">
+                <input type="text" name="title" id="title"
+                       value="{{ $category->title }}">
             </div>
 
             <div class="mt-5">
@@ -31,7 +33,8 @@
                         Choose
                     </option>
                     @foreach($categories as $cat)
-                        <option value="{{ $cat->id}}">
+                        <option value="{{ $cat->id}}"
+                            {{ $category->parent_id == $cat->id ? 'selected' : ''}}>
                             {{ $cat->title }}
                         </option>
                     @endforeach

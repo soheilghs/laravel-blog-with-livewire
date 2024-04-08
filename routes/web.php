@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Front\PostController as FrontPostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,9 +18,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index']);
 
 Route::middleware([
     'auth:sanctum',
@@ -29,6 +30,16 @@ Route::middleware([
     })->name('dashboard');
 });
 
+Route::name('front.')->group(function () {
+    Route::prefix('posts')
+        ->name('posts.')
+        ->group(function () {
+            Route::get('/{id}',
+                [FrontPostController::class, 'show'])
+            ->name('show');
+        });
+});
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -38,20 +49,16 @@ Route::middleware([
     Route::get('/', [DashboardController::class, 'index'])
         ->name('dashboard');
 
-    Route::prefix('categories')
-        ->name('category.')
-        ->group(function () {
-            Route::get('/',
-                [CategoryController::class, 'index'])
-                ->name('all');
-            Route::get('/create',
-                [CategoryController::class, 'create'])
-                ->name('create');
-            Route::post('/',
-                [CategoryController::class, 'store'])
-                ->name('store');
-            Route::get('/{id}',
-                [CategoryController::class, 'edit'])
-                ->name('edit');
-        });
+        Route::resource('categories',
+            CategoryController::class)
+            ->except(['show'])
+            ->parameters([
+                'categories' => 'id'
+            ]);
+        Route::resource('posts',
+            PostController::class)
+            ->except(['show'])
+            ->parameters([
+                'posts' => 'id'
+            ]);
 });

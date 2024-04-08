@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 interface CategoryRepositoryInterface {
 
-    public function getAll();
+    public function getAll(array $select = null);
     public function findById($id);
     public function delete($id);
     public function create(array $data);

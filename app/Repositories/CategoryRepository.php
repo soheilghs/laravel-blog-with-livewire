@@ -7,8 +7,12 @@ use App\Models\Category;
 class CategoryRepository
     implements CategoryRepositoryInterface {
 
-    public function getAll() {
-        return Category::all();
+    public function getAll(array $select = null) {
+        if (empty($select)) {
+            return Category::all();
+        }
+
+        return Category::select($select)->get();
     }
 
     public function findById($id) {
@@ -16,7 +20,7 @@ class CategoryRepository
     }
 
     public function delete($id) {
-
+        Category::destroy($id);
     }
 
     public function create(array $data) {

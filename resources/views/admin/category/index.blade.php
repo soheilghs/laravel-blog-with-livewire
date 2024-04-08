@@ -1,7 +1,7 @@
 <x-admin-layout>
     <div class="container ml-3 pt-2 mr-1">
         <div>
-            <a href="{{ route('admin.category.create') }}">
+            <a href="{{ route('admin.categories.create') }}">
                 Create New Category
             </a>
         </div>
@@ -26,11 +26,17 @@
                             {{ !empty($cat->parent) ? $cat->parent->title : '-' }}
                         </td>
                         <td>
-                            <button type="submit"
-                                    class="bg-red-700 text-xs hover:bg-red-300 text-white font-bold py-2 px-4 rounded">
-                                Delete
-                            </button>
-                            <a href="{{ route('admin.category.edit', $cat->id) }}"
+                            <form action="{{ route('admin.categories.destroy', $cat->id) }}"
+                                  method="post"
+                                  style="display: inline-block">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                        class="bg-red-700 text-xs hover:bg-red-300 text-white font-bold py-2 px-4 rounded">
+                                    Delete
+                                </button>
+                            </form>
+                            <a href="{{ route('admin.categories.edit', $cat->id) }}"
                                     class="bg-red-700 ml-3 text-xs hover:bg-red-300 text-white font-bold py-2 px-4 rounded">
                                 Update
                             </a>
